@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,5 +23,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        //ステージセレクト画面を表示
+        showStageSelectFragment();
+    }
+
+    private void showStageSelectFragment(){
+        Fragment fragment = StageSelectFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container,fragment)
+                .commitNow();
     }
 }

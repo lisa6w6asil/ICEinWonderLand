@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/game4_background"
+    android:background="@drawable/gameclear_background"
     xmlns:andoroid="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -16,13 +16,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/game_clear" />
+        android:src="@drawable/gameclear" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/game_clear" />
+        android:src="@drawable/gameclear" />
 
     <!--  ↓ステージセレクトへ遷移　-->
     <ImageView

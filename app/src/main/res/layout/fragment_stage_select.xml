@@ -9,17 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--  最初は雪山だけ表示　徐々にステージが増える　-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:src="@drawable/stage" />
 
+    <!--  ちょっとしたら上から下に降りてくる　-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/title" />
+
+    <!--  ↓右足左足交互にする　-->
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -27,6 +31,8 @@
         android:layout_marginBottom="300dp"
         android:layout_gravity="center"
         android:src="@drawable/ice_right" />
+
+    <!--  ↓右足左足交互にする　-->
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"

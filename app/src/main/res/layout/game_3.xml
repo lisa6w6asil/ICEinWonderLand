@@ -18,12 +18,16 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:src="@drawable/cat_body" />
+
+    <!--  ↓ここに問題文表示　-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="-50dp"
         android:src="@drawable/square" />
+
+    <!--  ↓ここに回答選択肢表示　-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +41,7 @@
         android:layout_marginTop="50dp"
         android:src="@drawable/cat_face" />
 
+    <!--  ↓ここに制限時間表示　-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

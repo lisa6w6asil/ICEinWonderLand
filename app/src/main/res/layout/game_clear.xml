@@ -2,69 +2,97 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/game3_background"
+    android:background="@drawable/game4_background"
     xmlns:andoroid="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/cat_tail" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/clear" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/cat_body" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="-50dp"
-        android:src="@drawable/square" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/square" />
+        android:src="@drawable/game_clear" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/cat_face" />
+        android:layout_gravity="center"
+        android:src="@drawable/game_clear" />
+
+    <!--  ↓ステージセレクトへ遷移　-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:layout_gravity="center|bottom"
+        android:src="@drawable/next" />
+
+    <!--  ↓離れていくアニメーション　-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/flower1" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/flower2" />
+    <!--  ↓右上　-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/flower1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:src="@drawable/paw" />
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/flower2" />
+
+    <!--  ↓左下　-->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="300dp"
+        android:src="@drawable/flower1" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="250dp"
-        android:layout_gravity="left"
-        android:src="@drawable/paw" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="300dp"
+        android:src="@drawable/flower2" />
+
+    <!--  ↓右下　-->
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="400dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="300dp"
+        android:src="@drawable/flower1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:src="@drawable/paw" />
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="bottom"
-        android:src="@drawable/paw" />
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="right|bottom"
-        android:src="@drawable/reset" />
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="300dp"
+        android:src="@drawable/flower2" />
 
+    <!--  ↑ここまで離れていくアニメーション　-->
 
 </FrameLayout>

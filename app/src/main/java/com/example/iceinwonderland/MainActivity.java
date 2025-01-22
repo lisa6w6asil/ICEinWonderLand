@@ -9,9 +9,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.iceinwonderland.ui.StageInfo;
+import com.example.iceinwonderland.ui.quiz.QuizFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements StageSelectFragment.StageSelectListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,4 +35,32 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.main_container,fragment)
                 .commitNow();
     }
+
+    //ステージが押された時呼ばれるところ
+    @Override
+    public void onStageSelect(StageInfo stageInfo) {
+        showSelectStage(stageInfo);
+    }
+    private void showSelectStage(StageInfo stageInfo){
+        Fragment fragment = null;
+        switch(stageInfo){
+            case Yukiyama:
+                break;
+            case House:
+                break;
+            case Tree:
+                fragment = QuizFragment.newInstance();
+                break;
+            case Shiro:
+                break;
+        }
+        changeFragment(fragment);
+    }
+
+    private void changeFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container,fragment)
+                .commitNow();
+    }
+
 }

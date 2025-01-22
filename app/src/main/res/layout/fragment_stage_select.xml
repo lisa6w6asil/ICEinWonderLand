@@ -11,6 +11,7 @@
 
     <!--  最初は雪山だけ表示　徐々にステージが増える　-->
     <ImageView
+        android:id="@+id/tree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

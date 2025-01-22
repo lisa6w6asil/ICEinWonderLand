@@ -33,6 +33,9 @@
         android:src="@drawable/next" />
 
     <!--  ↓離れていくアニメーション　-->
+
+    <!--  ↓右上　-->
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +49,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="100dp"
         android:src="@drawable/flower2" />
-    <!--  ↓右上　-->
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

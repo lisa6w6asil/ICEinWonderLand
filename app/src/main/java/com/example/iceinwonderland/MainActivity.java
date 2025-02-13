@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.ui.StageInfo;
+import com.example.iceinwonderland.ui.StopwatchFragment;
 import com.example.iceinwonderland.ui.quiz.QuizFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 
@@ -44,14 +45,15 @@ public class MainActivity extends AppCompatActivity implements StageSelectFragme
     private void showSelectStage(StageInfo stageInfo){
         Fragment fragment = null;
         switch(stageInfo){
-            case Yukiyama:
+            case Snowmountain:
                 break;
             case House:
                 break;
             case Tree:
                 fragment = QuizFragment.newInstance();
                 break;
-            case Shiro:
+            case Castle:
+                fragment = StopwatchFragment.newInstance();
                 break;
         }
         changeFragment(fragment);

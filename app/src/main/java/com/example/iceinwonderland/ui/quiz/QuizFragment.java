@@ -1,5 +1,7 @@
 package com.example.iceinwonderland.ui.quiz;
 
+import static android.text.TextUtils.replace;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
 import com.example.iceinwonderland.data.QuizData;
+import com.example.iceinwonderland.ui.StageInfo;
+import com.example.iceinwonderland.ui.result.GameclearFragment;
+import com.example.iceinwonderland.ui.result.GameoverFragment;
+import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +38,8 @@ public class QuizFragment extends Fragment {
     private Button option3;
     private Button option4;
     private ImageView resetButton;
+
+
 
     public  static  Fragment newInstance(){
         return new QuizFragment();
@@ -106,13 +114,23 @@ public class QuizFragment extends Fragment {
         if (selectAnswer.equals(quizAnswer)) {
             Toast.makeText(getContext(), "正解！", Toast.LENGTH_SHORT).show();
             //クリア画面へ上澄みを別の上澄変える（クリアの上澄み）
-            //todo:クリア画面のフラグメント（上澄）それを表示、ゲームオーバーも同じ
-
-
-
+            //todo:ok:クリア画面のフラグメント（上澄）それを表示、ゲームオーバーも同じ
+            //ステージセレクト画面を表示
+            Fragment clearfragment = GameclearFragment.newInstance();
+            if (clearfragment != null) {
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_quiz, clearfragment)
+                        .commit();
+            }
         } else {
-            Toast.makeText(getContext(), "不正解！", Toast.LENGTH_SHORT).show();
-            //ゲームオーバー画面へ
+                Toast.makeText(getContext(), "不正解！", Toast.LENGTH_SHORT).show();
+                //ゲームオーバー画面へ
+                Fragment overfragment = GameoverFragment.newInstance();
+                if (overfragment != null) {
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_quiz, overfragment)
+                            .commit();
+                }
         }
     }
 

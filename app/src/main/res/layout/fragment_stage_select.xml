@@ -11,11 +11,33 @@
 
     <!--  最初は雪山だけ表示　徐々にステージが増える　-->
     <ImageView
+        android:id="@+id/snowmountain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center"
+        android:src="@drawable/stage1" />
+    <ImageView
+        android:id="@+id/house"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/stage2" />
+
+    <ImageView
         android:id="@+id/tree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:src="@drawable/stage" />
+        android:layout_gravity="left|center"
+        android:layout_marginTop="200dp"
+        android:src="@drawable/stage3" />
+
+    <ImageView
+        android:id="@+id/castle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/stage4" />
 
     <!--  ちょっとしたら上から下に降りてくる　-->
     <ImageView

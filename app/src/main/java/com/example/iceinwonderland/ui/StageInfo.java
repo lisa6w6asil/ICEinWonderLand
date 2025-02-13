@@ -2,13 +2,13 @@ package com.example.iceinwonderland.ui;
 
 public enum StageInfo {
    //yuki
-    Yukiyama(1),
+    Snowmountain(1),
    //ie
     House(2),
    //ki
     Tree(3),
    //shiro
-    Shiro(4);
+    Castle(4);
 
     private int id;
 

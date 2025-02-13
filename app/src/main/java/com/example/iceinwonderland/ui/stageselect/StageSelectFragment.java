@@ -17,6 +17,8 @@ import com.example.iceinwonderland.ui.StageInfo;
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 
     private ImageView treeImage;
+    private ImageView castleImage;
+
 
     private StageSelectListener listener;
 
@@ -58,9 +60,11 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
     private void viewSettings(View root){
         //画像よみこみ
         treeImage = root.findViewById(R.id.tree);
+        castleImage = root.findViewById(R.id.castle);
 
         //クリック処理の設定
         treeImage.setOnClickListener(this);
+        castleImage.setOnClickListener(this);
     }
 
     @Override
@@ -70,6 +74,8 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
         //木だったらオンステージセレクトを呼んでメインに伝える
         if(resId == R.id.tree){
             listener.onStageSelect(StageInfo.Tree);
+        }else if(resId == R.id.castle){
+            listener.onStageSelect(StageInfo.Castle);
         }
     }
 }

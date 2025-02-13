@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 背景画像 -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/game4_background" />
+
+    <!-- 中央上のテキスト表示のための吹き出し -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:src="@drawable/fukidashi" />
+
+    <TextView
+        android:id="@+id/stopwatch_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="50dp"
+        android:text="画像の上に表示されるテキスト"/>
+
+
+    <!--中央 秒数表示 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="画像の上に表示されるテキスト"
+        android:src="@drawable/stopwatch" />
+
+    <TextView
+        android:id="@+id/stopwatch_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="50dp"
+        android:text="画像の上に表示されるテキスト"/>
+
+
+    <!-- 中央少し上の女王様 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/queen" />
+
+    <!-- 中央少し上の左側の王様 -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|top"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="120dp"
+        android:src="@drawable/king" />
+
+    <!-- 中央より少し下に配置するSTARTボタン -->
+    <ImageView
+        android:id="@+id/startbutton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:src="@drawable/start" />
+
+    <!-- 中央より少し下に配置するSTOPボタン -->
+    <ImageView
+        android:id="@+id/stopbutton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:src="@drawable/stop" />
+</FrameLayout>

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
 import com.example.iceinwonderland.ui.StageInfo;
+import com.example.iceinwonderland.ui.result.GameclearFragment;
 
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 

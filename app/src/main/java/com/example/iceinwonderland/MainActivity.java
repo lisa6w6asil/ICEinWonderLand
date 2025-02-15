@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.ui.StageInfo;
-import com.example.iceinwonderland.ui.StopwatchFragment;
+import com.example.iceinwonderland.ui.stopwatch.StopwatchFragment;
 import com.example.iceinwonderland.ui.quiz.QuizFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 

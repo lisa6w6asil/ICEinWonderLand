@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gameover_baclground"
+    android:id="@+id/gameover"
     xmlns:andoroid="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -27,6 +28,7 @@
 
     <!--  ↓やっていたゲームを最初からへ　-->
     <ImageView
+        android:id="@+id/retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="150dp"
@@ -34,6 +36,7 @@
         android:src="@drawable/retry" />
 
     <ImageView
+        android:id="@+id/top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="70dp"

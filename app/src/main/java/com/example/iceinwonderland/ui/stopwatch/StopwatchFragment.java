@@ -1,4 +1,4 @@
-package com.example.iceinwonderland.ui;
+package com.example.iceinwonderland.ui.stopwatch;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
-import com.example.iceinwonderland.ui.quiz.QuizFragment;
 
 public class StopwatchFragment extends Fragment {
     public  static  Fragment newInstance() {

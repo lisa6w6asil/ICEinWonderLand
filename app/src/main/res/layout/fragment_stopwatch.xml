@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <!-- 背景画像 -->
     <ImageView
         android:layout_width="match_parent"
@@ -17,11 +20,12 @@
         android:src="@drawable/fukidashi" />
 
     <TextView
-        android:id="@+id/stopwatch_text"
+        android:id="@+id/targetTimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_marginTop="50dp"
+        android:textStyle="bold"
         android:text="画像の上に表示されるテキスト"/>
 
 
@@ -30,16 +34,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="画像の上に表示されるテキスト"
         android:src="@drawable/stopwatch" />
 
     <TextView
-        android:id="@+id/stopwatch_time"
+        android:id="@+id/timerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="50dp"
-        android:text="画像の上に表示されるテキスト"/>
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:textColor="#FFF"
+        android:text=""/>
 
 
     <!-- 中央少し上の女王様 -->
@@ -65,7 +71,8 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="280dp"
+        android:visibility="visible"
         android:src="@drawable/start" />
 
     <!-- 中央より少し下に配置するSTOPボタン -->
@@ -73,6 +80,35 @@
         android:id="@+id/stopbutton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
+        android:layout_gravity="center"
+        android:layout_marginTop="280dp"
+        android:visibility="gone"
         android:src="@drawable/stop" />
+
+    <!-- クリアか失敗か表示　-->
+    <TextView
+        android:id="@+id/statusMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="220dp"/>
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/nextbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEXT"
+        android:visibility="gone"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="50dp"
+        android:src="@drawable/next" />
+
+
 </FrameLayout>

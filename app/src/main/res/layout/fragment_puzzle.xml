@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/game2_background"
+    android:id="@+id/fragment_puzzle"
+    android:padding="16dp">
+
+    <!-- 上部のアイコン -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cup_left" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cake"
+            android:layout_marginHorizontal="16dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cup_right" />
+    </LinearLayout>
+
+    <!-- 4x4のパズル用 GridLayout -->
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="376dp"
+        android:layout_height="492dp"
+        android:rowCount="4"
+        android:columnCount="4"
+        android:layout_gravity="center"
+        android:background="@drawable/game2rectangle"
+        android:padding="8dp">
+
+        <!-- 15個の画像ボタン -->
+        <ImageButton
+        android:id="@+id/button_1"
+        android:layout_width="91dp"
+        android:layout_height="120dp"
+        android:background="@null"
+        android:src="@drawable/keyboard_1_white"
+        android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_2"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_2_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_3"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_3_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_4"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_4_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_5"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_5_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_6"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_6_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_7"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_7_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_8"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_8_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_9"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_9_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_10"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_10_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_11"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_11_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_12"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_12_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_13"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_13_white"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:id="@+id/button_14"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_14_white"
+            android:scaleType="fitXY"/>
+        <ImageButton
+            android:id="@+id/button_15"
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@null"
+            android:src="@drawable/keyboard_15_white"
+            android:scaleType="fitXY"/>
+
+        <!-- 16個目は空白-->
+        <View
+            android:layout_width="91dp"
+            android:layout_height="120dp"
+            android:background="@android:color/transparent"/>
+
+    </GridLayout>
+
+    <!-- RESET ボタン -->
+    <ImageButton
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/reset"
+        android:background="@null"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"/>
+
+    <TextView
+        android:id="@+id/start_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="100dp"
+        android:text="タップしてスタート"
+        android:visibility="gone"/>
+
+</FrameLayout>

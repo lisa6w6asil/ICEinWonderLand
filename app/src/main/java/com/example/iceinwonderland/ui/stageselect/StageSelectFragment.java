@@ -2,6 +2,7 @@ package com.example.iceinwonderland.ui.stageselect;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.iceinwonderland.ui.result.GameclearFragment;
 
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 
+    private ImageView houseImage;
     private ImageView treeImage;
     private ImageView castleImage;
 
@@ -49,6 +51,7 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
         return inflater.inflate(R.layout.fragment_stage_select, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,10 +63,12 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
 
     private void viewSettings(View root){
         //画像よみこみ
+        houseImage = root.findViewById(R.id.house);
         treeImage = root.findViewById(R.id.tree);
         castleImage = root.findViewById(R.id.castle);
 
         //クリック処理の設定
+        houseImage.setOnClickListener(this);
         treeImage.setOnClickListener(this);
         castleImage.setOnClickListener(this);
     }
@@ -73,7 +78,9 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
         int resId = view.getId();
         if(listener == null) return;
         //木だったらオンステージセレクトを呼んでメインに伝える
-        if(resId == R.id.tree){
+        if(resId == R.id.house) {
+            listener.onStageSelect(StageInfo.House);
+        }else if(resId == R.id.tree){
             listener.onStageSelect(StageInfo.Tree);
         }else if(resId == R.id.castle){
             listener.onStageSelect(StageInfo.Castle);

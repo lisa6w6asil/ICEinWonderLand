@@ -39,8 +39,6 @@ public class QuizFragment extends Fragment {
     private Button option4;
     private ImageView resetButton;
 
-
-
     public  static  Fragment newInstance(){
         return new QuizFragment();
     }

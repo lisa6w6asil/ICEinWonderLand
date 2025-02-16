@@ -62,22 +62,6 @@ public class StopwatchFragment extends Fragment {
         // ストップボタンのクリックリスナー
         stopButton.setOnClickListener(v -> stopGame());
 
-//        // NEXTボタンのクリックリスナー（ゲーム結果によって画面を変える）
-//        nextButton.setOnClickListener(v -> {
-//            Fragment nextFragment;
-//            if (checkGameResult()) {
-//                nextFragment = new GameclearFragment(); // ゲームクリア画面へ
-//            } else {
-//                nextFragment = new GameoverFragment(); // ゲームオーバー画面へ
-//            }
-//
-//            // フラグメントを切り替える処理
-//            requireActivity().getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.main_container, nextFragment)
-//                    .addToBackStack(null)
-//                    .commit();
-//        });
-
         // 最初の目標タイム設定（1回目だけ設定）
         setInitialTargetTime();
     }

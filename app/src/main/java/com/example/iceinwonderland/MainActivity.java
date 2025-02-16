@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment;
 import com.example.iceinwonderland.ui.StageInfo;
 import com.example.iceinwonderland.ui.stopwatch.StopwatchFragment;
 import com.example.iceinwonderland.ui.quiz.QuizFragment;
+import com.example.iceinwonderland.ui.fifteenpuzzle.PuzzleFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
+
 
 public class MainActivity extends AppCompatActivity implements StageSelectFragment.StageSelectListener {
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements StageSelectFragme
             case Snowmountain:
                 break;
             case House:
+                fragment = PuzzleFragment.newInstance();
                 break;
             case Tree:
                 fragment = QuizFragment.newInstance();

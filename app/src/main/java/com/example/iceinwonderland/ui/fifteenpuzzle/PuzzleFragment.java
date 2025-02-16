@@ -5,21 +5,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.iceinwonderland.R;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class PuzzleFragment extends Fragment {
 
     private GridLayout gridLayout;
-    private Button[] buttons = new Button[16];
-    private ArrayList<Integer> buttonOrder = new ArrayList<>();
+    private ImageButton[] tiles = new ImageButton[16]; // ImageButton に変更
+    private ArrayList<Integer> tileOrder = new ArrayList<>();
     private TextView startText;
     private boolean gameStarted = false;
 
@@ -40,20 +43,18 @@ public class PuzzleFragment extends Fragment {
         gridLayout = view.findViewById(R.id.gridLayout);
         startText = view.findViewById(R.id.start_text);
 
-        // ボタンの初期化
-        for (int i = 1; i <= 15; i++) {
-            String buttonID = "button_" + i;
-            int resID = getResources().getIdentifier(buttonID, "id", requireActivity().getPackageName());
-            buttons[i - 1] = view.findViewById(resID);
+        // ImageButton の初期化
+        for (int i = 0; i < 16; i++) {
+            String tileID = "button_" + i;
+            int resID = getResources().getIdentifier(tileID, "id", requireActivity().getPackageName());
+            tiles[i] = view.findViewById(resID);
         }
-
-        // 空のタイル（16番目）をセット
-        buttons[15] = new Button(requireContext());
 
         // 初期配置リストを作成
         for (int i = 0; i < 16; i++) {
-            buttonOrder.add(i);
+            tileOrder.add(i);
         }
+        tileOrder.add(15); // 空のタイル
 
         // 「タップしてスタート」用リスナー
         gridLayout.setOnClickListener(v -> {
@@ -64,11 +65,13 @@ public class PuzzleFragment extends Fragment {
             }
         });
 
-        // ボタンクリックリスナーを設定
-        for (int i = 0; i < 15; i++) {
+        // タイルクリックリスナー
+        for (int i = 0; i < 16; i++) {
             final int index = i;
-            buttons[i].setOnClickListener(v -> moveTile(index));
+            tiles[i].setOnClickListener(v -> moveTile(index));
         }
+
+        updateGrid(); // 初回描画
     }
 
     // タイルを動かす処理
@@ -76,7 +79,7 @@ public class PuzzleFragment extends Fragment {
         int emptyIndex = findEmptyTile();
 
         if (isMovable(index, emptyIndex)) {
-            Collections.swap(buttonOrder, index, emptyIndex);
+            Collections.swap(tileOrder, index, emptyIndex);
             updateGrid();
 
             if (checkGoal()) {
@@ -87,7 +90,7 @@ public class PuzzleFragment extends Fragment {
 
     // 空のタイルを探す
     private int findEmptyTile() {
-        return buttonOrder.indexOf(15);
+        return tileOrder.indexOf(15);
     }
 
     // 動かせるかチェック
@@ -100,9 +103,15 @@ public class PuzzleFragment extends Fragment {
 
     // UI更新
     private void updateGrid() {
-        for (int i = 0; i < 15; i++) {
-            int num = buttonOrder.get(i);
-            buttons[i].setBackgroundResource(getTileImage(num));
+        for (int i = 0; i < 16; i++) {
+            int num = tileOrder.get(i);
+
+            if (num == 15) {
+                tiles[i].setVisibility(View.INVISIBLE); // 空のタイルを非表示
+            } else {
+                tiles[i].setVisibility(View.VISIBLE);
+                tiles[i].setImageResource(getTileImage(num)); // setImageResource() を使う
+            }
         }
     }
 
@@ -130,10 +139,10 @@ public class PuzzleFragment extends Fragment {
 
     // ゲームクリア判定
     private boolean checkGoal() {
-        for (int i = 0; i < 15; i++) {
-            if (buttonOrder.get(i) != i) return false;
+        for (int i = 0; i < 16; i++) {
+            if (tileOrder.get(i) != i) return false;
         }
-        return buttonOrder.get(15) == 15;
+        return tileOrder.get(15) == 15;
     }
 
     // ゲームクリア時のダイアログ
@@ -149,7 +158,7 @@ public class PuzzleFragment extends Fragment {
     // タイルをシャッフル
     private void shuffleTiles() {
         do {
-            Collections.shuffle(buttonOrder);
+            Collections.shuffle(tileOrder);
         } while (!isSolvable());
         updateGrid();
     }
@@ -159,12 +168,15 @@ public class PuzzleFragment extends Fragment {
         int inversions = 0;
         for (int i = 0; i < 15; i++) {
             for (int j = i + 1; j < 15; j++) {
-                if (buttonOrder.get(i) > buttonOrder.get(j)) inversions++;
+                if (tileOrder.get(i) > tileOrder.get(j)) inversions++;
             }
         }
         return inversions % 2 == 0;
     }
 }
+
+
+
 
 
 

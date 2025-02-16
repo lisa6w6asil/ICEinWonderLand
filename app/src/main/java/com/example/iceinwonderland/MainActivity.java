@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements StageSelectFragme
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
         });
         //ステージセレクト画面を表示
         showStageSelectFragment();

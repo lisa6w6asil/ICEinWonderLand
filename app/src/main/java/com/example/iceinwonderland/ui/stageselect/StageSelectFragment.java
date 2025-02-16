@@ -18,6 +18,7 @@ import com.example.iceinwonderland.ui.result.GameclearFragment;
 
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 
+    private ImageView snowmountainImage;
     private ImageView houseImage;
     private ImageView treeImage;
     private ImageView castleImage;
@@ -63,11 +64,13 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
 
     private void viewSettings(View root){
         //画像よみこみ
+        snowmountainImage = root.findViewById(R.id.snowmountain);
         houseImage = root.findViewById(R.id.house);
         treeImage = root.findViewById(R.id.tree);
         castleImage = root.findViewById(R.id.castle);
 
         //クリック処理の設定
+        snowmountainImage.setOnClickListener(this);
         houseImage.setOnClickListener(this);
         treeImage.setOnClickListener(this);
         castleImage.setOnClickListener(this);
@@ -78,7 +81,9 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
         int resId = view.getId();
         if(listener == null) return;
         //木だったらオンステージセレクトを呼んでメインに伝える
-        if(resId == R.id.house) {
+        if(resId == R.id.snowmountain){
+            listener.onStageSelect(StageInfo.Snowmountain);
+        }else if(resId == R.id.house) {
             listener.onStageSelect(StageInfo.House);
         }else if(resId == R.id.tree){
             listener.onStageSelect(StageInfo.Tree);

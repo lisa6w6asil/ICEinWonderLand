@@ -25,7 +25,7 @@ public class PuzzleFragment extends Fragment {
     private ArrayList<Integer> tileOrder = new ArrayList<>();
     private TextView startText;
     private boolean gameStarted = false;
-
+ 
     public static Fragment newInstance() {
         return new PuzzleFragment();
     }

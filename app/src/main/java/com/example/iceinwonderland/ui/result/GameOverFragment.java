@@ -1,5 +1,6 @@
 package com.example.iceinwonderland.ui.result;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
+import com.example.iceinwonderland.ui.GameResultCallback;
+import com.example.iceinwonderland.ui.GameRetryCallback;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 
-public class GameoverFragment extends Fragment {
+public class GameOverFragment extends Fragment {
 
     private ImageView retryButton;
     private ImageView topButton;
+    private GameRetryCallback callback;
 
     public  static  Fragment newInstance() {
-        return new GameoverFragment();
+        return new GameOverFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            callback = (GameRetryCallback) context;
+        }catch(ClassCastException e){
+            e.printStackTrace();
+        }
     }
 
     @Nullable
@@ -35,18 +49,13 @@ public class GameoverFragment extends Fragment {
        retryButton = view.findViewById(R.id.retry);
         topButton = view.findViewById(R.id.top);
 
-        //TODO:RETRYボタンの設定　前のゲームに戻るのはどうするか
-        //retryButton.setOnClickListener(new View.OnClickListener() {
-           // @Override
-            //public void onClick(View view) {
-              //  Fragment fragment = StageSelectFragment.newInstance();
-            //    if (fragment != null) {
-              //      getFragmentManager().beginTransaction()
-                //            .replace(R.id.gameover, fragment)
-                  //          .commit();
-          //      }
-         //   }
-        //});
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if(callback == null)return;
+               callback.onGameRetry();
+            }
+        });
 
         topButton.setOnClickListener(new View.OnClickListener() {
             @Override

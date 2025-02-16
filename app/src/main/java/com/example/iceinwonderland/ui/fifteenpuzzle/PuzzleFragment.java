@@ -1,6 +1,7 @@
 package com.example.iceinwonderland.ui.fifteenpuzzle;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,20 +15,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
+import com.example.iceinwonderland.ui.GameResultCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class PuzzleFragment extends Fragment {
 
-    private GridLayout gridLayout;
+    private View overlayView;
     private ImageButton[] tiles = new ImageButton[16]; // ImageButton に変更
     private ArrayList<Integer> tileOrder = new ArrayList<>();
     private TextView startText;
-    private boolean gameStarted = false;
- 
+    private GameResultCallback callback;
+
+
     public static Fragment newInstance() {
         return new PuzzleFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try{
+            callback = (GameResultCallback) context;
+        }catch(ClassCastException e){
+            e.printStackTrace();
+        }
     }
 
     @Nullable
@@ -40,7 +53,7 @@ public class PuzzleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        gridLayout = view.findViewById(R.id.gridLayout);
+        overlayView = view.findViewById(R.id.overlay_view);
         startText = view.findViewById(R.id.start_text);
 
         // ImageButton の初期化
@@ -54,15 +67,12 @@ public class PuzzleFragment extends Fragment {
         for (int i = 0; i < 16; i++) {
             tileOrder.add(i);
         }
-        tileOrder.add(15); // 空のタイル
 
         // 「タップしてスタート」用リスナー
-        gridLayout.setOnClickListener(v -> {
-            if (!gameStarted) {
-                gameStarted = true;
+        overlayView.setOnClickListener(v -> {
                 startText.setVisibility(View.GONE);
+                overlayView.setVisibility(View.GONE);
                 shuffleTiles();
-            }
         });
 
         // タイルクリックリスナー
@@ -107,6 +117,7 @@ public class PuzzleFragment extends Fragment {
             int num = tileOrder.get(i);
 
             if (num == 15) {
+
                 tiles[i].setVisibility(View.INVISIBLE); // 空のタイルを非表示
             } else {
                 tiles[i].setVisibility(View.VISIBLE);
@@ -150,9 +161,14 @@ public class PuzzleFragment extends Fragment {
         new AlertDialog.Builder(requireContext())
                 .setTitle("ゲームクリア！")
                 .setMessage("おめでとうございます！")
-                .setPositiveButton("OK", (dialog, which) -> shuffleTiles())
+                .setPositiveButton("OK", (dialog, which) -> moveResult(true))
                 .setCancelable(false)
                 .show();
+    }
+
+    private void moveResult(boolean isClear){
+        if (callback == null) return;
+        callback.onGameResult(isClear);
     }
 
     // タイルをシャッフル
@@ -160,10 +176,13 @@ public class PuzzleFragment extends Fragment {
         do {
             Collections.shuffle(tileOrder);
         } while (!isSolvable());
+        //グリッド表示の更新
         updateGrid();
     }
 
     // クリア可能なシャッフルか判定
+    // 15パズルクリアの可能性は空白マスを含む逆順数び奇数か偶数かで判定
+    //@return クリア可能ならtrue
     private boolean isSolvable() {
         int inversions = 0;
         for (int i = 0; i < 15; i++) {

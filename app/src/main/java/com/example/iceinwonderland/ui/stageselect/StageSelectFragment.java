@@ -2,7 +2,6 @@ package com.example.iceinwonderland.ui.stageselect;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
 import com.example.iceinwonderland.ui.StageInfo;
-import com.example.iceinwonderland.ui.result.GameclearFragment;
 
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 

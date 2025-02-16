@@ -5,7 +5,6 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
-import com.example.iceinwonderland.ui.result.GameclearFragment;
-import com.example.iceinwonderland.ui.result.GameoverFragment;
+import com.example.iceinwonderland.ui.result.GameClearFragment;
+import com.example.iceinwonderland.ui.result.GameOverFragment;
 
 import java.util.Locale;
 import java.util.Random;
@@ -170,9 +169,9 @@ public class StopwatchFragment extends Fragment {
         nextButton.setOnClickListener(v -> {
             Fragment nextFragment;
             if (isGameClear) {
-                nextFragment = new GameclearFragment();
+                nextFragment = new GameClearFragment();
             } else {
-                nextFragment = new GameoverFragment();
+                nextFragment = new GameOverFragment();
             }
             getParentFragmentManager()
                     .beginTransaction()

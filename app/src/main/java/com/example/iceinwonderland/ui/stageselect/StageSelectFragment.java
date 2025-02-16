@@ -1,6 +1,7 @@
 package com.example.iceinwonderland.ui.stageselect;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.example.iceinwonderland.ui.StageInfo;
 
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 
+    private ImageView iceImage;
+    private AnimationDrawable animationDrawable;
     private ImageView snowmountainImage;
     private ImageView houseImage;
     private ImageView treeImage;
@@ -57,15 +60,28 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
 
         //各Viewの設定
         viewSettings(view);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(animationDrawable != null){
+            animationDrawable.stop();
+        }
     }
 
     private void viewSettings(View root){
         //画像よみこみ
+        iceImage = root.findViewById(R.id.ice_image);
         snowmountainImage = root.findViewById(R.id.snowmountain);
         houseImage = root.findViewById(R.id.house);
         treeImage = root.findViewById(R.id.tree);
         castleImage = root.findViewById(R.id.castle);
+
+        //ICEちゃんのアニメーションを取得
+        iceImage.setBackgroundResource(R.drawable.animation_ice_run);
+        animationDrawable = (AnimationDrawable)iceImage.getBackground();
+        animationDrawable.start();
 
         //クリック処理の設定
         snowmountainImage.setOnClickListener(this);

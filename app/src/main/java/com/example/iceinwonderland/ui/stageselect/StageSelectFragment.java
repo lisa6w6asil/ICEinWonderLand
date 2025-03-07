@@ -18,6 +18,7 @@ import com.example.iceinwonderland.ui.StageInfo;
 public class StageSelectFragment extends Fragment implements View.OnClickListener {
 
     private ImageView iceImage;
+    private ImageView rabbitImage;
     private AnimationDrawable animationDrawable;
     private ImageView snowmountainImage;
     private ImageView houseImage;
@@ -73,6 +74,7 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
     private void viewSettings(View root){
         //画像よみこみ
         iceImage = root.findViewById(R.id.ice_image);
+        rabbitImage = root.findViewById(R.id.rabbit_image);
         snowmountainImage = root.findViewById(R.id.snowmountain);
         houseImage = root.findViewById(R.id.house);
         treeImage = root.findViewById(R.id.tree);
@@ -81,6 +83,11 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
         //ICEちゃんのアニメーションを取得
         iceImage.setBackgroundResource(R.drawable.animation_ice_run);
         animationDrawable = (AnimationDrawable)iceImage.getBackground();
+        animationDrawable.start();
+
+        //rabbitちゃんのアニメーションを取得
+        rabbitImage.setBackgroundResource(R.drawable.animation_rabbit_run);
+        animationDrawable = (AnimationDrawable)rabbitImage.getBackground();
         animationDrawable.start();
 
         //クリック処理の設定

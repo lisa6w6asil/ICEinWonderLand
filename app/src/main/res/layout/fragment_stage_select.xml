@@ -58,10 +58,10 @@
 
     <!--  ↓右足左足交互にする　-->
     <ImageView
+        android:id="@+id/rabbit_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:src="@drawable/rabbit_right" />
+        android:layout_gravity="center" />
 
 
 

@@ -41,14 +41,16 @@ public class CatchBallFragment extends Fragment {
     private final long timeLimit = 30000; // 30秒（ミリ秒）
     private GameResultCallback callback;
 
-    public static Fragment newInstance() {return new CatchBallFragment();}
+    public static Fragment newInstance() {
+        return new CatchBallFragment();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try{
+        try {
             callback = (GameResultCallback) context;
-        }catch(ClassCastException e){
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
     }
@@ -171,7 +173,13 @@ public class CatchBallFragment extends Fragment {
             pinkX = -10;
         }
         if (hitCheck(blackX, blackY, black)) {
-            gameOver();
+            moveResult(false);
+            return;
+        }
+
+        // **300点以上で moveResult = true**
+        if (score >= 300) {
+            moveResult(true);
         }
 
         // スコア更新
@@ -218,16 +226,13 @@ public class CatchBallFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                gameOver();
+               moveResult(false);
             }
         }.start();
     }
 
-    public void gameOver() {
-        handler.removeCallbacks(runnable);
-        countDownTimer.cancel();
-        Intent intent = new Intent(getActivity(), GameOverFragment.class);
-        intent.putExtra("SCORE", score);
-        startActivity(intent);
+    private void moveResult(boolean isClear) {
+        if (callback == null) return;
+        callback.onGameResult(isClear);
     }
 }

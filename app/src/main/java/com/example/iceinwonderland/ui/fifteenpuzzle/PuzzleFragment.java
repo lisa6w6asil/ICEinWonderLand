@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.os.CountDownTimer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +26,9 @@ public class PuzzleFragment extends Fragment {
     private View overlayView;
     private ImageButton[] tiles = new ImageButton[16]; // ImageButton に変更
     private ArrayList<Integer> tileOrder = new ArrayList<>();
-    private TextView startText;
+    private TextView startText, timerLabel;
+    private CountDownTimer countDownTimer;
+    private final long timeLimit = 120000; // 120秒（ミリ秒）
     private GameResultCallback callback;
 
 
@@ -36,9 +39,9 @@ public class PuzzleFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try{
+        try {
             callback = (GameResultCallback) context;
-        }catch(ClassCastException e){
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
     }
@@ -55,6 +58,9 @@ public class PuzzleFragment extends Fragment {
 
         overlayView = view.findViewById(R.id.overlay_view);
         startText = view.findViewById(R.id.start_text);
+        timerLabel = view.findViewById(R.id.timerLabel);
+
+        timerLabel.setText("120");
 
         // ImageButton の初期化
         for (int i = 0; i < 16; i++) {
@@ -70,9 +76,10 @@ public class PuzzleFragment extends Fragment {
 
         // 「タップしてスタート」用リスナー
         overlayView.setOnClickListener(v -> {
-                startText.setVisibility(View.GONE);
-                overlayView.setVisibility(View.GONE);
-                shuffleTiles();
+            startText.setVisibility(View.GONE);
+            overlayView.setVisibility(View.GONE);
+            shuffleTiles();
+            startTimer();
         });
 
         // タイルクリックリスナー
@@ -129,22 +136,38 @@ public class PuzzleFragment extends Fragment {
     // タイルの画像を取得
     private int getTileImage(int num) {
         switch (num) {
-            case 0: return R.drawable.keyboard_1_white;
-            case 1: return R.drawable.keyboard_2_white;
-            case 2: return R.drawable.keyboard_3_white;
-            case 3: return R.drawable.keyboard_4_white;
-            case 4: return R.drawable.keyboard_5_white;
-            case 5: return R.drawable.keyboard_6_white;
-            case 6: return R.drawable.keyboard_7_white;
-            case 7: return R.drawable.keyboard_8_white;
-            case 8: return R.drawable.keyboard_9_white;
-            case 9: return R.drawable.keyboard_10_white;
-            case 10: return R.drawable.keyboard_11_white;
-            case 11: return R.drawable.keyboard_12_white;
-            case 12: return R.drawable.keyboard_13_white;
-            case 13: return R.drawable.keyboard_14_white;
-            case 14: return R.drawable.keyboard_15_white;
-            default: return R.drawable.game2rectangle;
+            case 0:
+                return R.drawable.keyboard_1_white;
+            case 1:
+                return R.drawable.keyboard_2_white;
+            case 2:
+                return R.drawable.keyboard_3_white;
+            case 3:
+                return R.drawable.keyboard_4_white;
+            case 4:
+                return R.drawable.keyboard_5_white;
+            case 5:
+                return R.drawable.keyboard_6_white;
+            case 6:
+                return R.drawable.keyboard_7_white;
+            case 7:
+                return R.drawable.keyboard_8_white;
+            case 8:
+                return R.drawable.keyboard_9_white;
+            case 9:
+                return R.drawable.keyboard_10_white;
+            case 10:
+                return R.drawable.keyboard_11_white;
+            case 11:
+                return R.drawable.keyboard_12_white;
+            case 12:
+                return R.drawable.keyboard_13_white;
+            case 13:
+                return R.drawable.keyboard_14_white;
+            case 14:
+                return R.drawable.keyboard_15_white;
+            default:
+                return R.drawable.game2rectangle;
         }
     }
 
@@ -166,7 +189,7 @@ public class PuzzleFragment extends Fragment {
                 .show();
     }
 
-    private void moveResult(boolean isClear){
+    private void moveResult(boolean isClear) {
         if (callback == null) return;
         callback.onGameResult(isClear);
     }
@@ -192,7 +215,27 @@ public class PuzzleFragment extends Fragment {
         }
         return inversions % 2 == 0;
     }
+
+    //タイマー開始
+    private void startTimer() {
+        countDownTimer = new CountDownTimer(timeLimit, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerLabel.setText("" + millisUntilFinished / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                timerLabel.setText("0");
+                moveResult(false);
+            }
+        };
+        countDownTimer.start();
+    }
 }
+
+
+
 
 
 

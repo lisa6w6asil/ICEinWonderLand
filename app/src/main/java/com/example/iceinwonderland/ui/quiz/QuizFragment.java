@@ -2,6 +2,7 @@ package com.example.iceinwonderland.ui.quiz;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,14 @@ import java.util.Random;
 public class QuizFragment extends Fragment {
 
     private String quizAnswer;
-    private TextView quizText;
+    private TextView quizText, timerLabel;
     private Button option1;
     private Button option2;
     private Button option3;
     private Button option4;
     private ImageView resetButton;
+    private CountDownTimer countDownTimer;
+    private final long timeLimit = 30000; // 30秒（ミリ秒）
     private GameResultCallback callback;
 
     public  static  Fragment newInstance(){
@@ -62,7 +65,10 @@ public class QuizFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         quizText = view.findViewById(R.id.question_text);
+        timerLabel = view.findViewById(R.id.timerLabel);
         resetButton = view.findViewById(R.id.reset);
+
+        timerLabel.setText("30");
 
 
         // ボタンを設定
@@ -73,6 +79,7 @@ public class QuizFragment extends Fragment {
 
         // クイズを作成
         createQuiz();
+        startTimer();
 
         option1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +149,23 @@ public class QuizFragment extends Fragment {
         option2.setText(answerList.get(1));
         option3.setText(answerList.get(2));
         option4.setText(answerList.get(3));
+    }
+
+    //タイマー開始
+    private void startTimer() {
+        countDownTimer = new CountDownTimer(timeLimit, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerLabel.setText("" + millisUntilFinished / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                timerLabel.setText("0");
+                checkAnswer("isTimeUp");
+            }
+        };
+        countDownTimer.start();
     }
 
 }

@@ -38,8 +38,8 @@ public class CatchBallFragment extends Fragment {
     private boolean start_flg = false;
 
     private CountDownTimer countDownTimer; // 追加
-    private final long timeLimit = 30000;
-    private GameResultCallback callback;// 30秒（ミリ秒）
+    private final long timeLimit = 30000; // 30秒（ミリ秒）
+    private GameResultCallback callback;
 
     public static Fragment newInstance() {return new CatchBallFragment();}
 
@@ -87,6 +87,48 @@ public class CatchBallFragment extends Fragment {
 
         scoreLabel.setText("Score : 0");
         timerLabel.setText("Time : 30");
+
+        // **boxのY座標を正しく取得するためにpost()を使用**
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                frameHeight = view.getHeight();
+                boxSize = box.getHeight();
+                boxY = box.getY(); // **boxの初期位置を取得**
+            }
+        });
+
+        // **タッチイベントを設定**
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!start_flg) {
+                    // **ゲーム開始**
+                    start_flg = true;
+                    startLabel.setVisibility(View.GONE);
+
+                    // タイマー開始
+                    startTimer();
+
+                    handler.post(runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            changePos();
+                            handler.postDelayed(this, 20);
+                        }
+                    });
+                } else {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        // タッチしたら上に移動
+                        action_flg = true;
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        // タッチを離したら下に落ちる
+                        action_flg = false;
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     public void changePos() {
@@ -165,33 +207,6 @@ public class CatchBallFragment extends Fragment {
 
         return (Math.abs(objectCenterX - boxCenterX) < boxHalfWidth + objectHalfWidth) &&
                 (Math.abs(objectCenterY - boxCenterY) < boxHalfHeight + objectHalfHeight);
-    }
-
-     boolean onTouchEvent(MotionEvent event) {
-        if (!start_flg) {
-            start_flg = true;
-            frameHeight = box.getHeight();
-            boxSize = box.getHeight();
-            startLabel.setVisibility(View.GONE);
-
-            // タイマー開始
-            startTimer();
-
-            handler.post(runnable = new Runnable() {
-                @Override
-                public void run() {
-                    changePos();
-                    handler.postDelayed(this, 20);
-                }
-            });
-        } else {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                action_flg = true;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                action_flg = false;
-            }
-        }
-        return true;
     }
 
     private void startTimer() {

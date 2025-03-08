@@ -1,6 +1,10 @@
 package com.example.iceinwonderland;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +29,10 @@ public class MainActivity extends AppCompatActivity
         implements StageSelectFragment.StageSelectListener, GameResultCallback, GameRetryCallback
 {
     private ICEinWonderLandApplication application;
+    private ImageView startButton;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +46,15 @@ public class MainActivity extends AppCompatActivity
         });
         //アプリケーションクラスを取得
         application = (ICEinWonderLandApplication)getApplication();
-        //ステージセレクト画面を表示
-        showStageSelectFragment();
+        startButton = findViewById(R.id.start);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ステージセレクト画面を表示
+                showStageSelectFragment();
+            }
+        });
     }
 
     private void showStageSelectFragment(){

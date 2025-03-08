@@ -11,6 +11,24 @@
    <FrameLayout
        android:id="@+id/main_container"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
+       android:layout_height="match_parent" >
+
+      <ImageView
+          android:layout_width="800dp"
+          android:layout_height="754dp"
+          android:layout_gravity="center"
+          android:layout_marginStart="90dp"
+          android:src="@drawable/main" />
+      <ImageView
+          android:id="@+id/start"
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          android:layout_gravity="center|bottom"
+          android:layout_marginStart="100dp"
+          android:layout_marginBottom="100dp"
+          android:src="@drawable/start" />
+
+
+   </FrameLayout>
 
 </LinearLayout>

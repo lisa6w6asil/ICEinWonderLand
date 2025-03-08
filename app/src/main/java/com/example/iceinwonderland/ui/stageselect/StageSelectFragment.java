@@ -50,7 +50,9 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // ステージセレクト画面のレイアウトを設定
         return inflater.inflate(R.layout.fragment_stage_select, container, false);
     }
 

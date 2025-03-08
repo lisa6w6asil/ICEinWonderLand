@@ -39,6 +39,7 @@
     <!--  ↓右上　-->
 
     <ImageView
+        android:id="@+id/flower_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
@@ -46,6 +47,7 @@
         android:src="@drawable/flower1" />
 
     <ImageView
+        android:id="@+id/big_flower_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
@@ -53,6 +55,7 @@
         android:src="@drawable/flower2" />
 
     <ImageView
+        android:id="@+id/flower_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="300dp"
@@ -60,6 +63,7 @@
         android:src="@drawable/flower1" />
 
     <ImageView
+        android:id="@+id/big_flower_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
@@ -69,6 +73,7 @@
 
     <!--  ↓左下　-->
     <ImageView
+        android:id="@+id/flower_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
@@ -76,6 +81,7 @@
         android:src="@drawable/flower1" />
 
     <ImageView
+        android:id="@+id/big_flower_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
@@ -84,6 +90,7 @@
 
     <!--  ↓右下　-->
     <ImageView
+        android:id="@+id/flower_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="300dp"
@@ -91,6 +98,7 @@
         android:src="@drawable/flower1" />
 
     <ImageView
+        android:id="@+id/big_flower_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

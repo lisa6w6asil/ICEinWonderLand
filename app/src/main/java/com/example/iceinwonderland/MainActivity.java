@@ -2,8 +2,6 @@ package com.example.iceinwonderland;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.iceinwonderland.ui.GameResultCallback;
 import com.example.iceinwonderland.ui.GameRetryCallback;
@@ -23,6 +22,7 @@ import com.example.iceinwonderland.ui.stopwatch.StopwatchFragment;
 import com.example.iceinwonderland.ui.quiz.QuizFragment;
 import com.example.iceinwonderland.ui.fifteenpuzzle.PuzzleFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
+import com.example.iceinwonderland.ui.video.VideoFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -48,13 +48,23 @@ public class MainActivity extends AppCompatActivity
         application = (ICEinWonderLandApplication)getApplication();
         startButton = findViewById(R.id.start);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //ステージセレクト画面を表示
-                showStageSelectFragment();
-            }
+        // ボタンが押された時にVideoFragmentを表示
+        startButton.setOnClickListener(v -> {
+            // FragmentTransactionを使ってVideoFragmentを追加
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            VideoFragment videoFragment = new VideoFragment();
+
+            // フラグメントをトランザクションに追加
+            transaction.replace(R.id.main_container, videoFragment);
+            transaction.commit();
         });
+    }
+
+    private void showVideoFragment(){
+        Fragment fragment = VideoFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container,fragment)
+                .commitNow();
     }
 
     private void showStageSelectFragment(){

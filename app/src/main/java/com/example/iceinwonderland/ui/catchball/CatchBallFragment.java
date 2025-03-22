@@ -25,21 +25,20 @@ import com.example.iceinwonderland.ui.result.GameOverFragment;
 
 public class CatchBallFragment extends Fragment {
 
-    private TextView scoreLabel, startLabel, timerLabel;
+    private TextView  startLabel, timerLabel;
     private ImageView box, orange, pink, black;
     private int frameHeight, boxSize, screenWidth, screenHeight;
     private float boxY;
     private float orangeX, orangeY;
     private float pinkX, pinkY;
     private float blackX, blackY;
-    private int score = 0;
     private Handler handler = new Handler();
     private Runnable runnable;
     private boolean action_flg = false;
     private boolean start_flg = false;
 
     private CountDownTimer countDownTimer; // 追加
-    private final long timeLimit = 30000; // 30秒（ミリ秒）
+    private final long timeLimit = 15000; // 15秒（ミリ秒）
     private GameResultCallback callback;
 
     public static Fragment newInstance() {
@@ -65,7 +64,6 @@ public class CatchBallFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        scoreLabel = view.findViewById(R.id.scoreLabel);
         startLabel = view.findViewById(R.id.startLabel);
         timerLabel = view.findViewById(R.id.timerLabel); // タイマー用テキスト
         box = view.findViewById(R.id.box);
@@ -88,7 +86,6 @@ public class CatchBallFragment extends Fragment {
         black.setX(-80.0f);
         black.setY(-80.0f);
 
-        scoreLabel.setText("Score : 0");
         timerLabel.setText("Time : 30");
 
         // **boxのY座標を正しく取得するためにpost()を使用**
@@ -166,25 +163,18 @@ public class CatchBallFragment extends Fragment {
 
         // 当たり判定
         if (hitCheck(orangeX, orangeY, orange)) {
-            score += 10;
-            orangeX = -10;
-        }
-        if (hitCheck(pinkX, pinkY, pink)) {
-            score += 30;
-            pinkX = -10;
-        }
-        if (hitCheck(blackX, blackY, black)) {
             moveResult(false);
             return;
         }
-
-        // **300点以上で moveResult = true**
-        if (score >= 300) {
-            moveResult(true);
+        if (hitCheck(pinkX, pinkY, pink)) {
+            moveResult(false);
+            return;
         }
-
-        // スコア更新
-        scoreLabel.setText("Score : " + score);
+        if (hitCheck(blackX, blackY, black)) {
+            callback.onGameResult(false);
+            moveResult(false);
+            return;
+        }
     }
 
     public void boxMove() {
@@ -228,7 +218,7 @@ public class CatchBallFragment extends Fragment {
 
             @Override
             public void onFinish() {
-               moveResult(false);
+               moveResult(true);
             }
         }.start();
     }
@@ -244,7 +234,14 @@ public class CatchBallFragment extends Fragment {
         stopTimer();
         handler.removeCallbacks(runnable);
         handler = null;
-        if (callback == null) return;
-        callback.onGameResult(isClear);
+
+        if (callback == null)
+            return;
+        if (isClear) {
+            callback.onGameResult(true);
+        } else {
+            callback.onGameResult(false);
+        }
+
     }
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.iceinwonderland.R;
+import com.example.iceinwonderland.ui.catchball.CatchBallFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
 
 public class VideoFragment extends Fragment {
@@ -46,7 +47,7 @@ public class VideoFragment extends Fragment {
         // 動画再生終了時のリスナーを設定
         videoView.setOnCompletionListener(mp -> {
             // 動画が終了したらStageSelectFragmentに遷移
-            replaceFragment(new StageSelectFragment());
+            replaceFragment(new CatchBallFragment());
         });
 
         return view;

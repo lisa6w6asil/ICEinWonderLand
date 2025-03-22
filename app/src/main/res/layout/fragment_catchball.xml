@@ -6,17 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:background="@drawable/game1_background"
+    android:background="@drawable/game0_background"
     android:id="@+id/main">
 
-    <TextView
-        android:id="@+id/scoreLabel"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Score : 300"
-        android:textSize="18sp"
-        android:paddingLeft="10dp"
-        android:gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/timerLabel"
@@ -24,6 +16,7 @@
         android:layout_height="wrap_content"
         android:text="Time : 30"
         android:textSize="24sp"
+        android:textColor="@color/white"
         android:layout_gravity="left"/>
 
     <FrameLayout
@@ -37,6 +30,7 @@
             android:layout_height="wrap_content"
             android:text="タップしてスタート"
             android:textSize="20sp"
+            android:textColor="@color/white"
             android:layout_gravity="center"/>
 
         <ImageView

@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.iceinwonderland.ui.GameResultCallback;
 import com.example.iceinwonderland.ui.GameRetryCallback;
 import com.example.iceinwonderland.ui.StageInfo;
+import com.example.iceinwonderland.ui.block.BlockFragment;
 import com.example.iceinwonderland.ui.catchball.CatchBallFragment;
 import com.example.iceinwonderland.ui.result.GameClearFragment;
 import com.example.iceinwonderland.ui.result.GameOverFragment;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch(stageInfo){
             case Snowmountain:
-                fragment = CatchBallFragment.newInstance();
+                fragment = BlockFragment.newInstance();
                 break;
             case House:
                 fragment = PuzzleFragment.newInstance();

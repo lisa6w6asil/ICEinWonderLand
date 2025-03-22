@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -218,6 +219,7 @@ public class CatchBallFragment extends Fragment {
     }
 
     private void startTimer() {
+        Log.d("startTimer", "startTimer");
         countDownTimer = new CountDownTimer(timeLimit, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -231,7 +233,17 @@ public class CatchBallFragment extends Fragment {
         }.start();
     }
 
+    private void stopTimer(){
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+    }
+
     private void moveResult(boolean isClear) {
+        stopTimer();
+        handler.removeCallbacks(runnable);
+        handler = null;
         if (callback == null) return;
         callback.onGameResult(isClear);
     }

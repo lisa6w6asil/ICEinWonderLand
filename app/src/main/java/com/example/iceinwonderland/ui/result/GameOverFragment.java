@@ -52,8 +52,8 @@ public class GameOverFragment extends Fragment {
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if(callback == null)return;
-               callback.onGameRetry();
+                if (callback == null) return;
+                callback.onGameRetry();
             }
         });
 

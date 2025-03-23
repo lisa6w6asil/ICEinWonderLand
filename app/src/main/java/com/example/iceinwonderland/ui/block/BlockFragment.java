@@ -261,11 +261,58 @@ public class BlockFragment extends Fragment {
     }
 
     private void AButtonTask(){
+        //Aボタンを押した時の処理
+        AreaInfo nextAreaInfo = getNextAreaInfo(
+                characterInfo.getPositionX(),
+                characterInfo.getPositionY(),
+                characterInfo.getDirection()
+        );
+        //もし次のエリア情報がNULLじゃなくてICEだったら
+         if (nextAreaInfo != null && nextAreaInfo.getAreaType() == AreaType.ICE){
+             //getMoveEn
+             AreaInfo endAreaInfo = getMoveEndPointInfo(nextAreaInfo, characterInfo.getDirection());
+             if (endAreaInfo == null) return;
+             //ICE情報を更新
+             ImageView iceImageView =endAreaInfo.getImageView();
+             iceImageView.setImageResource(iceInfo.getImageResId());
+             iceInfo.setImageView(iceImageView);
+             iceInfo.setPositionX(endAreaInfo.getPosX());
+             iceInfo.setPositionY(endAreaInfo.getPosY());
 
+             //移動前のエリア情報を更新
+             nextAreaInfo.getImageView().setImageDrawable(null);
+             nextAreaInfo.setAreaType(AreaType.FREE);
+
+             if(endAreaInfo.getAreaType() == AreaType.GOAL && callback != null){
+                 callback.onGameResult(true);
+             }else{
+                 endAreaInfo.setAreaType(AreaType.ICE);
+             }
+         }
     }
 
     private void BButtonTask(){
 
     }
 
+
+    private AreaInfo getMoveEndPointInfo(AreaInfo startAreaInfo, Direction direction){
+        //nextAreaInfoがendAreaInfoに進化するメソッド
+        AreaInfo endAreaInfo = startAreaInfo;
+        int posX = startAreaInfo.getPosX();
+        int posY = startAreaInfo.getPosY();
+        while (true){
+            AreaInfo nextAreaInfo = getNextAreaInfo(posX, posY, direction);
+            if (nextAreaInfo == null || !nextAreaInfo.isIceMoveable()) {
+                if (startAreaInfo.getPosX() == posX && startAreaInfo.getPosY() == posY) {
+                    return null;
+                } else {
+                    return endAreaInfo;
+                }
+            }
+            posX = nextAreaInfo.getPosX();
+            posY = nextAreaInfo.getPosY();
+            endAreaInfo = nextAreaInfo;
+        }
+    }
 }

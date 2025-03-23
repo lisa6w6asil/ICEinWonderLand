@@ -114,7 +114,9 @@ public class CatchBallFragment extends Fragment {
                         @Override
                         public void run() {
                             changePos();
-                            handler.postDelayed(this, 20);
+                            if (handler != null) {
+                                handler.postDelayed(this, 20);
+                            }
                         }
                     });
                 } else {
@@ -163,16 +165,15 @@ public class CatchBallFragment extends Fragment {
 
         // 当たり判定
         if (hitCheck(orangeX, orangeY, orange)) {
-            moveResult(false);
+            moveResult(true);
             return;
         }
         if (hitCheck(pinkX, pinkY, pink)) {
-            moveResult(false);
+            moveResult(true);
             return;
         }
         if (hitCheck(blackX, blackY, black)) {
-            callback.onGameResult(false);
-            moveResult(false);
+            moveResult(true);
             return;
         }
     }

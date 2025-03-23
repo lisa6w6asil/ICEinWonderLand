@@ -1,6 +1,8 @@
 package com.example.iceinwonderland.ui;
 
 public enum StageInfo {
+    //umi
+    Sea(0),
    //yuki
     Snowmountain(1),
    //ie

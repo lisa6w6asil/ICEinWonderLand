@@ -90,6 +90,9 @@ public class MainActivity extends AppCompatActivity
     private void moveToStage(StageInfo stageInfo){
         Fragment fragment = null;
         switch(stageInfo){
+            case Sea:
+                fragment = CatchBallFragment.newInstance();
+                break;
             case Snowmountain:
                 fragment = BlockFragment.newInstance();
                 break;

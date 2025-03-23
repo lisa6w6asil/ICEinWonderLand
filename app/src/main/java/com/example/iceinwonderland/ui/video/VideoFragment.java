@@ -46,6 +46,8 @@ public class VideoFragment extends Fragment {
 
         // 動画再生終了時のリスナーを設定
         videoView.setOnCompletionListener(mp -> {
+
+
             // 動画が終了したらStageSelectFragmentに遷移
             replaceFragment(new CatchBallFragment());
         });

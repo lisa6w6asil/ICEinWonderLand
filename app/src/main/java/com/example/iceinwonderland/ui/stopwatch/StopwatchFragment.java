@@ -68,7 +68,7 @@ public class StopwatchFragment extends Fragment {
     // 最初の目標タイム設定
     private void setInitialTargetTime() {
         Random random = new Random();
-        int[] targetTimes = {3000};
+        int[] targetTimes = {3000, 5000, 7000, 10000};
         // 目標タイム一旦3秒 (3秒、5秒、7秒、10秒)int[] targetTimes = {3000, 5000, 7000, 10000};
         targetTimeMillis = targetTimes[random.nextInt(targetTimes.length)];
         targetTimeText.setText(String.format("目標タイム: %.3f秒", targetTimeMillis / 1000.0));
@@ -77,7 +77,7 @@ public class StopwatchFragment extends Fragment {
     // 新しい目標タイムを設定するメソッド（2回目以降に呼ばれる）
     private void setRandomTargetTime() {
         Random random = new Random();
-        int[] targetTimes = {3000};
+        int[] targetTimes = {3000, 5000, 7000, 10000};
         // 目標タイム一旦3秒 (3秒、5秒、7秒、10秒) int[] targetTimes = {3000, 5000, 7000, 10000};
         targetTimeMillis = targetTimes[random.nextInt(targetTimes.length)];
         targetTimeText.setText(String.format("目標タイム: %.3f秒", targetTimeMillis / 1000.0));

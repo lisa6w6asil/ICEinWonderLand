@@ -28,7 +28,7 @@ public class PuzzleFragment extends Fragment {
     private ArrayList<Integer> tileOrder = new ArrayList<>();
     private TextView startText, timerLabel;
     private CountDownTimer countDownTimer;
-    private final long timeLimit = 120000; // 120秒（ミリ秒）
+    private final long timeLimit = 10000; // 120秒（ミリ秒）
     private GameResultCallback callback;
 
 
@@ -60,7 +60,7 @@ public class PuzzleFragment extends Fragment {
         startText = view.findViewById(R.id.start_text);
         timerLabel = view.findViewById(R.id.timerLabel);
 
-        timerLabel.setText("120");
+        timerLabel.setText("10");
 
         // ImageButton の初期化
         for (int i = 0; i < 16; i++) {

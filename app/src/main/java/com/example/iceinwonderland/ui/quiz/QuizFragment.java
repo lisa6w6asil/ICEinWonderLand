@@ -129,7 +129,6 @@ public class QuizFragment extends Fragment {
     }
 
     private void createQuiz(){
-        //todo:クイズをリセットする。同じ問題は嫌かも...別にいいかなぁ
         int quizIndex = new Random().nextInt(QuizData.QUESTIONS.length);
         String quizStr = QuizData.QUESTIONS[quizIndex][0];
         quizText.setText(quizStr);

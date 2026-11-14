@@ -89,7 +89,7 @@ public class CatchBallFragment extends Fragment {
         black.setX(-80.0f);
         black.setY(-80.0f);
 
-        timerLabel.setText("Time : 30");
+        timerLabel.setText("Time : " + timeLimit / 1000);
 
         // boxのY座標を正しく取得するためにpost()を使用
         view.post(() -> {
@@ -202,15 +202,15 @@ public class CatchBallFragment extends Fragment {
 
         // 当たり判定
         if (hitCheck(orangeX, orangeY, orange)) {
-            moveResult(true);
+            moveResult(false);
             return;
         }
         if (hitCheck(pinkX, pinkY, pink)) {
-            moveResult(true);
+            moveResult(false);
             return;
         }
         if (hitCheck(blackX, blackY, black)) {
-            moveResult(true);
+            moveResult(false);
             return;
         }
     }

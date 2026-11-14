@@ -57,17 +57,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showVideoFragment(){
-        Fragment fragment = VideoFragment.newInstance();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container,fragment)
-                .commitNow();
+        changeFragment(VideoFragment.newInstance());
     }
 
     private void showStageSelectFragment(){
-        Fragment fragment = StageSelectFragment.newInstance();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container,fragment)
-                .commitNow();
+        changeFragment(StageSelectFragment.newInstance());
     }
 
     //タイトル画面のスタートが押された時呼ばれるところ
@@ -82,7 +76,6 @@ public class MainActivity extends AppCompatActivity
         showSelectStage(stageInfo);
     }
     private void showSelectStage(StageInfo stageInfo){
-        Fragment fragment = null;
         //選択されたステージ情報をアプリケーションクラスに保存
         application.setCurrentStageInfo(stageInfo);
         moveToStage(stageInfo);

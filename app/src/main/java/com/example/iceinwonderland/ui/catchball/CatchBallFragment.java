@@ -1,13 +1,11 @@
 package com.example.iceinwonderland.ui.catchball;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,13 +72,6 @@ public class CatchBallFragment extends Fragment {
         pink = view.findViewById(R.id.pink);
         black = view.findViewById(R.id.black);
 
-        // スクリーンサイズを取得
-        Display display = requireActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        screenWidth = size.x;
-        screenHeight = size.y;
-
         // 初期位置設定（画面外）
         orange.setX(-80.0f);
         orange.setY(-80.0f);
@@ -94,6 +85,8 @@ public class CatchBallFragment extends Fragment {
         // boxのY座標を正しく取得するためにpost()を使用
         view.post(() -> {
             frameHeight = view.getHeight();
+            screenWidth = view.getWidth();   // この画面が実際に使える幅
+            screenHeight = view.getHeight(); // この画面が実際に使える高さ
             boxSize = box.getHeight();
             boxY = box.getY();
         });

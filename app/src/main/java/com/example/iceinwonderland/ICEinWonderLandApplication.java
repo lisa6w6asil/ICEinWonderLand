@@ -6,7 +6,7 @@ import com.example.iceinwonderland.ui.StageInfo;
 
 public class ICEinWonderLandApplication extends Application {
 
-    //現在洗濯中のステージ
+    //現在選択中のステージ
         private StageInfo currentStageInfo;
 
         public StageInfo getCurrentStageInfo(){

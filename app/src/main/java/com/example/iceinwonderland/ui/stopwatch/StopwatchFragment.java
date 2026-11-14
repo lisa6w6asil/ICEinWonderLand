@@ -1,5 +1,6 @@
 package com.example.iceinwonderland.ui.stopwatch;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -13,8 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
-import com.example.iceinwonderland.ui.result.GameClearFragment;
-import com.example.iceinwonderland.ui.result.GameOverFragment;
+import com.example.iceinwonderland.ui.GameResultCallback;
 
 import java.util.Locale;
 import java.util.Random;
@@ -33,7 +33,17 @@ public class StopwatchFragment extends Fragment {
     private long targetTimeMillis; // 目標時間
     private boolean isGameRunning = false;
     private boolean isFirstStart = true; // 最初のゲーム開始か判定するフラグ
+    private GameResultCallback callback; // 受付(MainActivity)への電話番号
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof GameResultCallback) {
+            callback = (GameResultCallback) context;
+        } else {
+            throw new ClassCastException(context + " must implement GameResultCallback");
+        }
+    }
 
     @Nullable
     @Override
@@ -63,6 +73,23 @@ public class StopwatchFragment extends Fragment {
 
         // 最初の目標タイム設定（1回目だけ設定）
         setInitialTargetTime();
+    }
+
+    // 画面が壊れるとき、計測中のタイマーを止める
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (countUpTimer != null) {
+            countUpTimer.cancel();
+            countUpTimer = null;
+        }
+        isGameRunning = false;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
     }
 
     // 最初の目標タイム設定
@@ -164,19 +191,12 @@ public class StopwatchFragment extends Fragment {
         return false;
     }
 
-    // Nextボタンを表示して遷移処理をセットする
+    // NEXTを押したら、自分で切り替えずに受付へ結果を報告する
     private void showNextButton(boolean isGameClear) {
         nextButton.setOnClickListener(v -> {
-            Fragment nextFragment;
-            if (isGameClear) {
-                nextFragment = new GameClearFragment();
-            } else {
-                nextFragment = new GameOverFragment();
+            if (callback != null) {
+                callback.onGameResult(isGameClear);
             }
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_container, nextFragment)
-                    .commit();
         });
     }
 }

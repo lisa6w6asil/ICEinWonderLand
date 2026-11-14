@@ -1,7 +1,6 @@
 package com.example.iceinwonderland;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.iceinwonderland.ui.BackToStageSelectCallback;
 import com.example.iceinwonderland.ui.GameResultCallback;
@@ -23,15 +21,15 @@ import com.example.iceinwonderland.ui.stopwatch.StopwatchFragment;
 import com.example.iceinwonderland.ui.quiz.QuizFragment;
 import com.example.iceinwonderland.ui.fifteenpuzzle.PuzzleFragment;
 import com.example.iceinwonderland.ui.stageselect.StageSelectFragment;
+import com.example.iceinwonderland.ui.title.TitleFragment;
 import com.example.iceinwonderland.ui.video.VideoFragment;
 
 
 public class MainActivity extends AppCompatActivity
         implements StageSelectFragment.StageSelectListener, GameResultCallback, GameRetryCallback,
-        BackToStageSelectCallback
+        BackToStageSelectCallback, TitleFragment.TitleListener
 {
     private ICEinWonderLandApplication application;
-    private ImageView startButton;
 
 
     @Override
@@ -47,18 +45,15 @@ public class MainActivity extends AppCompatActivity
         });
         //アプリケーションクラスを取得
         application = (ICEinWonderLandApplication)getApplication();
-        startButton = findViewById(R.id.start);
 
-        // ボタンが押された時にVideoFragmentを表示
-        startButton.setOnClickListener(v -> {
-            // FragmentTransactionを使ってVideoFragmentを追加
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            VideoFragment videoFragment = new VideoFragment();
+        // 初回起動のときだけタイトル画面を入れる(画面回転などで作り直されたときは、前の画面が自動で戻るため)
+        if (savedInstanceState == null) {
+            showTitleFragment();
+        }
+    }
 
-            // フラグメントをトランザクションに追加
-            transaction.replace(R.id.main_container, videoFragment);
-            transaction.commit();
-        });
+    private void showTitleFragment(){
+        changeFragment(TitleFragment.newInstance());
     }
 
     private void showVideoFragment(){
@@ -73,6 +68,12 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container,fragment)
                 .commitNow();
+    }
+
+    //タイトル画面のスタートが押された時呼ばれるところ
+    @Override
+    public void onStartPressed() {
+        showVideoFragment();
     }
 
     //ステージが押された時呼ばれるところ

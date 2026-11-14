@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +17,6 @@ import androidx.fragment.app.Fragment;
 import com.example.iceinwonderland.R;
 import com.example.iceinwonderland.data.QuizData;
 import com.example.iceinwonderland.ui.GameResultCallback;
-import com.example.iceinwonderland.ui.result.GameClearFragment;
-import com.example.iceinwonderland.ui.result.GameOverFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,26 +35,28 @@ public class QuizFragment extends Fragment {
     private ImageView resetButton;
     private CountDownTimer countDownTimer;
     private final long timeLimit = 30000; // 30秒（ミリ秒）
+    private long remainingTime = timeLimit; // 一時停止したときの残り時間
+    private boolean finished = false;      // 勝ち負けの報告が済んだか
     private GameResultCallback callback;
 
-    public  static  Fragment newInstance(){
+    public static Fragment newInstance(){
         return new QuizFragment();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try{
+        if (context instanceof GameResultCallback) {
             callback = (GameResultCallback) context;
-        }catch(ClassCastException e){
-            e.printStackTrace();
+        } else {
+            throw new ClassCastException(context + " must implement GameResultCallback");
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_quiz,container,false);
+        return inflater.inflate(R.layout.fragment_quiz, container, false);
     }
 
     @Override
@@ -68,62 +67,53 @@ public class QuizFragment extends Fragment {
         timerLabel = view.findViewById(R.id.timerLabel);
         resetButton = view.findViewById(R.id.reset);
 
-        timerLabel.setText("30");
+        timerLabel.setText(String.valueOf(timeLimit / 1000));
 
-
-        // ボタンを設定
         option1 = view.findViewById(R.id.option1);
         option2 = view.findViewById(R.id.option2);
         option3 = view.findViewById(R.id.option3);
         option4 = view.findViewById(R.id.option4);
 
-        // クイズを作成
         createQuiz();
-        startTimer();
 
-        option1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = ((Button)v).getText().toString();
-                checkAnswer(str);  // 1番の選択肢
-            }
-        });
+        // 4つの選択肢は、押されたボタンの文字で答え合わせする
+        View.OnClickListener answerListener = v -> checkAnswer(((Button) v).getText().toString());
+        option1.setOnClickListener(answerListener);
+        option2.setOnClickListener(answerListener);
+        option3.setOnClickListener(answerListener);
+        option4.setOnClickListener(answerListener);
 
-
-        option2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = ((Button)v).getText().toString();
-                checkAnswer(str);  // 2番の選択肢
-            }
-        });
-
-        option3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = ((Button)v).getText().toString();
-                checkAnswer(str);  // 3番の選択肿
-            }
-        });
-
-        option4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String str = ((Button)v).getText().toString();
-                checkAnswer(str);   // 4番の選択肢
-            }
-        });
-
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createQuiz();
-            }
-        });
+        resetButton.setOnClickListener(v -> createQuiz());
     }
 
-    // 答えを判定するメソッド
+    // 画面が見えたとき:残り時間からタイマーを動かす(初回は30秒から)
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!finished) {
+            startTimer(remainingTime);
+        }
+    }
+
+    // 画面が見えなくなりかけたとき:タイマーを止める(ホームに行く、別の画面に切り替わる、など)
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopTimer();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
+    // 答えを判定して、受付に1回だけ報告する
     private void checkAnswer(String selectAnswer) {
+        if (finished) return;
+        finished = true;
+        stopTimer();
+
         if (callback == null) return;
         callback.onGameResult(selectAnswer.equals(quizAnswer));
     }
@@ -143,7 +133,6 @@ public class QuizFragment extends Fragment {
         //選択肢をシャッフル
         Collections.shuffle(answerList);
 
-        // 選択肢ボタンのクリックリスナー設定
         option1.setText(answerList.get(0));
         option2.setText(answerList.get(1));
         option3.setText(answerList.get(2));
@@ -151,15 +140,18 @@ public class QuizFragment extends Fragment {
     }
 
     //タイマー開始
-    private void startTimer() {
-        countDownTimer = new CountDownTimer(timeLimit, 1000) {
+    private void startTimer(long millis) {
+        stopTimer(); // 念のため、前のタイマーが残っていたら止めてから作る
+        countDownTimer = new CountDownTimer(millis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timerLabel.setText("" + millisUntilFinished / 1000);
+                remainingTime = millisUntilFinished;
+                timerLabel.setText(String.valueOf(millisUntilFinished / 1000));
             }
 
             @Override
             public void onFinish() {
+                remainingTime = 0;
                 timerLabel.setText("0");
                 checkAnswer("isTimeUp");
             }
@@ -167,5 +159,10 @@ public class QuizFragment extends Fragment {
         countDownTimer.start();
     }
 
+    private void stopTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+    }
 }
-

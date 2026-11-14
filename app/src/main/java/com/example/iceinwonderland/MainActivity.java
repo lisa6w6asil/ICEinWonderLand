@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.iceinwonderland.ui.BackToStageSelectCallback;
 import com.example.iceinwonderland.ui.GameResultCallback;
 import com.example.iceinwonderland.ui.GameRetryCallback;
 import com.example.iceinwonderland.ui.StageInfo;
@@ -26,7 +27,8 @@ import com.example.iceinwonderland.ui.video.VideoFragment;
 
 
 public class MainActivity extends AppCompatActivity
-        implements StageSelectFragment.StageSelectListener, GameResultCallback, GameRetryCallback
+        implements StageSelectFragment.StageSelectListener, GameResultCallback, GameRetryCallback,
+        BackToStageSelectCallback
 {
     private ICEinWonderLandApplication application;
     private ImageView startButton;
@@ -129,5 +131,11 @@ public class MainActivity extends AppCompatActivity
         //選択中のステージを再表示する
         StageInfo selectStageInfo = application.getCurrentStageInfo();
         moveToStage(selectStageInfo);
+    }
+
+    //クリア画面のNEXTが押された時呼ばれるところ
+    @Override
+    public void onBackToStageSelect() {
+        showStageSelectFragment();
     }
 }

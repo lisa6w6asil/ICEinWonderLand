@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity
     private ImageView startButton;
 
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -19,7 +19,8 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
 
     private ImageView iceImage;
     private ImageView rabbitImage;
-    private AnimationDrawable animationDrawable;
+    private AnimationDrawable iceAnimation;    // ICEちゃんの走るアニメ
+    private AnimationDrawable rabbitAnimation; // ウサギの走るアニメ
     private ImageView snowmountainImage;
     private ImageView houseImage;
     private ImageView treeImage;
@@ -68,8 +69,11 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(animationDrawable != null){
-            animationDrawable.stop();
+        if (iceAnimation != null) {
+            iceAnimation.stop();
+        }
+        if (rabbitAnimation != null) {
+            rabbitAnimation.stop();
         }
     }
 
@@ -84,19 +88,25 @@ public class StageSelectFragment extends Fragment implements View.OnClickListene
 
         //ICEちゃんのアニメーションを取得
         iceImage.setBackgroundResource(R.drawable.animation_ice_run);
-        animationDrawable = (AnimationDrawable)iceImage.getBackground();
-        animationDrawable.start();
+        iceAnimation = (AnimationDrawable) iceImage.getBackground();
+        iceAnimation.start();
 
         //rabbitちゃんのアニメーションを取得
         rabbitImage.setBackgroundResource(R.drawable.animation_rabbit_run);
-        animationDrawable = (AnimationDrawable)rabbitImage.getBackground();
-        animationDrawable.start();
+        rabbitAnimation = (AnimationDrawable) rabbitImage.getBackground();
+        rabbitAnimation.start();
 
         //クリック処理の設定
         snowmountainImage.setOnClickListener(this);
         houseImage.setOnClickListener(this);
         treeImage.setOnClickListener(this);
         castleImage.setOnClickListener(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 
     @Override

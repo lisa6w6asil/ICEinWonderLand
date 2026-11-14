@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
@@ -21,9 +22,14 @@ import java.util.Locale;
 import java.util.Random;
 
 public class StopwatchFragment extends Fragment {
-    public  static  Fragment newInstance() {
+    public static Fragment newInstance() {
         return new StopwatchFragment();
     }
+
+    // 目標タイムの候補(3秒、5秒、7秒、10秒)
+    private static final int[] TARGET_TIMES = {3000, 5000, 7000, 10000};
+    // 目標との差がこれ未満ならクリア(0.1秒)
+    private static final long CLEAR_RANGE_MILLIS = 100;
 
     private TextView timerText;
     private TextView targetTimeText;
@@ -31,10 +37,9 @@ public class StopwatchFragment extends Fragment {
     private ImageView startButton, stopButton, nextButton;
     private CountDownTimer countUpTimer;
     private long timeElapsedMillis; // 経過時間
-    private long targetTimeMillis; // 目標時間
-    private long startTimeMillis; // 計測を始めた時刻
+    private long targetTimeMillis;  // 目標時間
+    private long startTimeMillis;   // 計測を始めた時刻
     private boolean isGameRunning = false;
-    private boolean isFirstStart = true; // 最初のゲーム開始か判定するフラグ
     private GameResultCallback callback; // 受付(MainActivity)への電話番号
 
     @Override
@@ -67,14 +72,10 @@ public class StopwatchFragment extends Fragment {
         // NEXTボタンは最初は非表示
         nextButton.setVisibility(View.GONE);
 
-        // ゲーム開始ボタンのクリックリスナー
         startButton.setOnClickListener(v -> startGame());
-
-        // ストップボタンのクリックリスナー
         stopButton.setOnClickListener(v -> stopGame());
 
-        // 最初の目標タイム設定（1回目だけ設定）
-        setInitialTargetTime();
+        setRandomTargetTime();
     }
 
     // 画面が壊れるとき、計測中のタイマーを止める
@@ -94,51 +95,29 @@ public class StopwatchFragment extends Fragment {
         callback = null;
     }
 
-    // 最初の目標タイム設定
-    private void setInitialTargetTime() {
-        Random random = new Random();
-        int[] targetTimes = {3000, 5000, 7000, 10000};
-        // 目標タイム一旦3秒 (3秒、5秒、7秒、10秒)int[] targetTimes = {3000, 5000, 7000, 10000};
-        targetTimeMillis = targetTimes[random.nextInt(targetTimes.length)];
-        targetTimeText.setText(String.format("目標タイム: %.3f秒", targetTimeMillis / 1000.0));
-    }
-
-    // 新しい目標タイムを設定するメソッド（2回目以降に呼ばれる）
+    // 目標タイムを候補の中からランダムに決める
     private void setRandomTargetTime() {
-        Random random = new Random();
-        int[] targetTimes = {3000, 5000, 7000, 10000};
-        // 目標タイム一旦3秒 (3秒、5秒、7秒、10秒) int[] targetTimes = {3000, 5000, 7000, 10000};
-        targetTimeMillis = targetTimes[random.nextInt(targetTimes.length)];
-        targetTimeText.setText(String.format("目標タイム: %.3f秒", targetTimeMillis / 1000.0));
+        targetTimeMillis = TARGET_TIMES[new Random().nextInt(TARGET_TIMES.length)];
+        targetTimeText.setText(String.format(Locale.getDefault(), "目標タイム: %.3f秒", targetTimeMillis / 1000.0));
     }
 
     private void startGame() {
-        // 最初のゲーム開始時には目標タイムは変更しない
-        if (!isFirstStart) {
-            setRandomTargetTime(); // 2回目以降に目標タイムを再設定
-        }
-        isFirstStart = false; // 2回目以降は目標タイムを変更する
-
-        // ゲーム開始時
         isGameRunning = true;
-        statusMessage.setText(""); // クリアメッセージを空にする
+        statusMessage.setText("");
 
-        // スタートボタンを無効にする（ゲーム開始中は押せない）
+        // 計測中はスタートを押せない、ストップを押せる
         startButton.setEnabled(false);
-
-        // ストップボタンを有効にする
         stopButton.setEnabled(true);
         stopButton.setVisibility(View.VISIBLE);
 
-        // タイマー初期化
         timeElapsedMillis = 0;
         startTimeMillis = SystemClock.elapsedRealtime();
 
-        // カウントアップタイマー開始
-        countUpTimer = new CountDownTimer(Long.MAX_VALUE, 10) { // 無限にカウントアップ
+        // 表示を10ミリ秒ごとに更新する(時間そのものは時計の差で測る)
+        countUpTimer = new CountDownTimer(Long.MAX_VALUE, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timeElapsedMillis = SystemClock.elapsedRealtime() - startTimeMillis; // 始めた時刻からの差で測る
+                timeElapsedMillis = SystemClock.elapsedRealtime() - startTimeMillis;
                 updateTimerDisplay();
             }
 
@@ -147,60 +126,48 @@ public class StopwatchFragment extends Fragment {
                 // 無限タイマーなので、ここは呼ばれない
             }
         };
-
         countUpTimer.start();
     }
 
     private void stopGame() {
-        if (isGameRunning) {
-            timeElapsedMillis = SystemClock.elapsedRealtime() - startTimeMillis; // 押した瞬間の時間で判定する
-            updateTimerDisplay();
-            countUpTimer.cancel();  // タイマーをキャンセル
-            isGameRunning = false;
-            startButton.setEnabled(true);  // ゲーム終了後、再度ゲーム開始ボタンを有効にする
-            stopButton.setEnabled(false);  // ストップボタンを無効にする
+        if (!isGameRunning) return;
 
-            // 最後の結果を表示
-            checkGameResult();
-        }
+        // 押した瞬間の時間で判定する
+        timeElapsedMillis = SystemClock.elapsedRealtime() - startTimeMillis;
+        updateTimerDisplay();
+        countUpTimer.cancel();
+        isGameRunning = false;
+        stopButton.setEnabled(false);
+
+        showResult();
     }
 
-    // タイマーの表示を更新
     private void updateTimerDisplay() {
         int seconds = (int) (timeElapsedMillis / 1000);
         int milliseconds = (int) (timeElapsedMillis % 1000);
-        String timeFormatted = String.format(Locale.getDefault(), "%d.%03d", seconds, milliseconds);
-        timerText.setText(timeFormatted);
+        timerText.setText(String.format(Locale.getDefault(), "%d.%03d", seconds, milliseconds));
     }
 
-    // ゲームの結果をチェックして表示
-    private boolean checkGameResult() {
-        // 結果の判定
-        long timeDifference = Math.abs(targetTimeMillis - timeElapsedMillis);
+    // 結果を判定して表示し、NEXTボタンを出す
+    private void showResult() {
+        boolean isClear = Math.abs(targetTimeMillis - timeElapsedMillis) < CLEAR_RANGE_MILLIS;
 
-        if (timeDifference < 100) {
+        if (isClear) {
             statusMessage.setText("クリア！");
-            statusMessage.setTextColor(getResources().getColor(android.R.color.holo_green_dark));// 緑色で表示
-            nextButton.setVisibility(View.VISIBLE);
-            startButton.setVisibility(View.GONE);
-            stopButton.setVisibility(View.GONE);
-            showNextButton(true);
+            statusMessage.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark));
         } else {
             statusMessage.setText("残念！");
-            statusMessage.setTextColor(getResources().getColor(android.R.color.holo_red_dark));// 赤色で表示
-            nextButton.setVisibility(View.VISIBLE);
-            startButton.setVisibility(View.GONE);
-            stopButton.setVisibility(View.GONE);
-            showNextButton(false);
+            statusMessage.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark));
         }
-        return false;
-    }
 
-    // NEXTを押したら、自分で切り替えずに受付へ結果を報告する
-    private void showNextButton(boolean isGameClear) {
+        nextButton.setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.GONE);
+        stopButton.setVisibility(View.GONE);
+
+        // NEXTを押したら、自分で切り替えずに受付へ結果を報告する
         nextButton.setOnClickListener(v -> {
             if (callback != null) {
-                callback.onGameResult(isGameClear);
+                callback.onGameResult(isClear);
             }
         });
     }

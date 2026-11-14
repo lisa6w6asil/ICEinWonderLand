@@ -3,6 +3,7 @@ package com.example.iceinwonderland.ui.stopwatch;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class StopwatchFragment extends Fragment {
     private CountDownTimer countUpTimer;
     private long timeElapsedMillis; // 経過時間
     private long targetTimeMillis; // 目標時間
+    private long startTimeMillis; // 計測を始めた時刻
     private boolean isGameRunning = false;
     private boolean isFirstStart = true; // 最初のゲーム開始か判定するフラグ
     private GameResultCallback callback; // 受付(MainActivity)への電話番号
@@ -130,12 +132,13 @@ public class StopwatchFragment extends Fragment {
 
         // タイマー初期化
         timeElapsedMillis = 0;
+        startTimeMillis = SystemClock.elapsedRealtime();
 
         // カウントアップタイマー開始
         countUpTimer = new CountDownTimer(Long.MAX_VALUE, 10) { // 無限にカウントアップ
             @Override
             public void onTick(long millisUntilFinished) {
-                timeElapsedMillis += 10; // 10ミリ秒ずつ加算
+                timeElapsedMillis = SystemClock.elapsedRealtime() - startTimeMillis; // 始めた時刻からの差で測る
                 updateTimerDisplay();
             }
 
@@ -150,6 +153,8 @@ public class StopwatchFragment extends Fragment {
 
     private void stopGame() {
         if (isGameRunning) {
+            timeElapsedMillis = SystemClock.elapsedRealtime() - startTimeMillis; // 押した瞬間の時間で判定する
+            updateTimerDisplay();
             countUpTimer.cancel();  // タイマーをキャンセル
             isGameRunning = false;
             startButton.setEnabled(true);  // ゲーム終了後、再度ゲーム開始ボタンを有効にする

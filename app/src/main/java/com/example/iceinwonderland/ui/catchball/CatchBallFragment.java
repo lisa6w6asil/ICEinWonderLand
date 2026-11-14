@@ -1,11 +1,11 @@
 package com.example.iceinwonderland.ui.catchball;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.iceinwonderland.R;
 import com.example.iceinwonderland.ui.GameResultCallback;
-import com.example.iceinwonderland.ui.result.GameOverFragment;
 
 public class CatchBallFragment extends Fragment {
 
@@ -32,13 +31,16 @@ public class CatchBallFragment extends Fragment {
     private float orangeX, orangeY;
     private float pinkX, pinkY;
     private float blackX, blackY;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable runnable;
     private boolean action_flg = false;
     private boolean start_flg = false;
 
-    private CountDownTimer countDownTimer; // 追加
+    private CountDownTimer countDownTimer;
     private final long timeLimit = 15000; // 15秒（ミリ秒）
+    private long remainingTime = timeLimit; // 一時停止したときの残り時間
+    private boolean paused = false;   // 一時停止中か
+    private boolean finished = false; // 勝ち負けの報告が済んだか
     private GameResultCallback callback;
 
     public static Fragment newInstance() {
@@ -61,18 +63,19 @@ public class CatchBallFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_catchball, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         startLabel = view.findViewById(R.id.startLabel);
-        timerLabel = view.findViewById(R.id.timerLabel); // タイマー用テキスト
+        timerLabel = view.findViewById(R.id.timerLabel);
         box = view.findViewById(R.id.box);
         orange = view.findViewById(R.id.orange);
         pink = view.findViewById(R.id.pink);
         black = view.findViewById(R.id.black);
 
         // スクリーンサイズを取得
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Display display = requireActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         screenWidth = size.x;
@@ -88,49 +91,83 @@ public class CatchBallFragment extends Fragment {
 
         timerLabel.setText("Time : 30");
 
-        // **boxのY座標を正しく取得するためにpost()を使用**
-        view.post(new Runnable() {
+        // boxのY座標を正しく取得するためにpost()を使用
+        view.post(() -> {
+            frameHeight = view.getHeight();
+            boxSize = box.getHeight();
+            boxY = box.getY();
+        });
+
+        // タッチイベントを設定
+        view.setOnTouchListener((v, event) -> {
+            if (finished) return true;
+
+            if (!start_flg || paused) {
+                // ゲーム開始、または一時停止からの再開
+                start_flg = true;
+                paused = false;
+                startLabel.setVisibility(View.GONE);
+                startTimer(remainingTime);
+                startGameLoop();
+            } else {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    action_flg = true;  // タッチしたら上に移動
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    action_flg = false; // 離したら下に落ちる
+                }
+            }
+            return true;
+        });
+    }
+
+    // 画面が見えなくなりかけたとき(ホームに戻る、別アプリに切り替えるなど)
+    @Override
+    public void onPause() {
+        super.onPause();
+        pauseGame();
+    }
+
+    // 別の画面に切り替わって、この画面が壊れるとき
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopTimer();
+        stopGameLoop();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
+
+    private void startGameLoop() {
+        runnable = new Runnable() {
             @Override
             public void run() {
-                frameHeight = view.getHeight();
-                boxSize = box.getHeight();
-                boxY = box.getY(); // **boxの初期位置を取得**
-            }
-        });
-
-        // **タッチイベントを設定**
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!start_flg) {
-                    // **ゲーム開始**
-                    start_flg = true;
-                    startLabel.setVisibility(View.GONE);
-
-                    // タイマー開始
-                    startTimer();
-
-                    handler.post(runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            changePos();
-                            if (handler != null) {
-                                handler.postDelayed(this, 20);
-                            }
-                        }
-                    });
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        // タッチしたら上に移動
-                        action_flg = true;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        // タッチを離したら下に落ちる
-                        action_flg = false;
-                    }
+                changePos();
+                if (!finished && !paused) {
+                    handler.postDelayed(this, 20);
                 }
-                return true;
             }
-        });
+        };
+        handler.post(runnable);
+    }
+
+    private void stopGameLoop() {
+        if (runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+    }
+
+    private void pauseGame() {
+        if (!start_flg || paused || finished) return;
+        paused = true;
+        action_flg = false;
+        stopTimer();
+        stopGameLoop();
+        startLabel.setText("タップで再開");
+        startLabel.setVisibility(View.VISIBLE);
     }
 
     public void changePos() {
@@ -180,11 +217,9 @@ public class CatchBallFragment extends Fragment {
 
     public void boxMove() {
         if (action_flg) {
-            // 上に移動
-            boxY -= 20;
+            boxY -= 20; // 上に移動
         } else {
-            // 下に落ちる
-            boxY += 20;
+            boxY += 20; // 下に落ちる
         }
 
         // 画面外に出ないようにする
@@ -209,22 +244,23 @@ public class CatchBallFragment extends Fragment {
                 (Math.abs(objectCenterY - boxCenterY) < boxHalfHeight + objectHalfHeight);
     }
 
-    private void startTimer() {
-        Log.d("startTimer", "startTimer");
-        countDownTimer = new CountDownTimer(timeLimit, 1000) {
+    private void startTimer(long millis) {
+        Log.d("startTimer", "startTimer: " + millis);
+        countDownTimer = new CountDownTimer(millis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                remainingTime = millisUntilFinished;
                 timerLabel.setText("Time : " + millisUntilFinished / 1000);
             }
 
             @Override
             public void onFinish() {
-               moveResult(true);
+                moveResult(true);
             }
         }.start();
     }
 
-    private void stopTimer(){
+    private void stopTimer() {
         if (countDownTimer != null) {
             countDownTimer.cancel();
             countDownTimer = null;
@@ -232,17 +268,12 @@ public class CatchBallFragment extends Fragment {
     }
 
     private void moveResult(boolean isClear) {
+        if (finished) return; // 2回報告しないようにする
+        finished = true;
         stopTimer();
-        handler.removeCallbacks(runnable);
-        handler = null;
+        stopGameLoop();
 
-        if (callback == null)
-            return;
-        if (isClear) {
-            callback.onGameResult(true);
-        } else {
-            callback.onGameResult(false);
-        }
-
+        if (callback == null) return;
+        callback.onGameResult(isClear);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.iceinwonderland;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.ImageView;
 
